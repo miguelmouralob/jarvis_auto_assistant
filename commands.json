@@ -1,0 +1,30 @@
+{
+    "abrir_navegador": {
+        "keywords": ["abrir", "navegador"],
+        "action": "open_browser"
+    },
+    "fechar_navegador": {
+        "keywords": ["fechar", "navegador"],
+        "action": "close_browser"
+    },
+    "nova_guia": {
+        "keywords": ["nova", "tab"],
+        "action": "new_tab"
+    },
+    "fechar_guia": {
+        "keywords": ["fechar", "tab"],
+        "action": "close_tab"
+    },
+    "guia_anterior": {
+        "keywords": ["tab", "anterior"],
+        "action": "prev_tab"
+    },
+    "guia_posterior": {
+        "keywords": ["tab", "posterior"],
+        "action": "next_tab"
+    },
+    "fechar_bud": {
+        "keywords": ["encerrar"],
+        "action": "exit_program"
+    }
+}

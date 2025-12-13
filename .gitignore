@@ -1,0 +1,10 @@
+# Arquivos Locais
+config.json
+
+# Ambiente Virtual
+venv/
+.env
+
+# Python
+__pycache__/
+*.pyc

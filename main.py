@@ -1,0 +1,126 @@
+import speech_recognition as sr
+import os
+import time
+import json
+import pyautogui
+
+config = {}
+rodando = True
+
+def carregar_config():
+    with open('config.json', 'r', encoding='utf-8') as file:
+        return json.load(file)
+
+def carregar_comandos():
+    with open('commands.json', 'r', encoding='utf-8') as file:
+        return json.load(file)
+    
+
+def ouvir_comando():
+    recognizer = sr.Recognizer()
+    
+    with sr.Microphone() as source:
+        print("Ouvindo...")
+        recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
+        
+    try:
+        comando = recognizer.recognize_google(audio, language='pt-BR')
+        print(f"Você disse: {comando}")
+        return comando.lower()
+    
+    except sr.UnknownValueError:
+        print("Desculpe, não entendi o que você disse.")
+        return ""
+    
+    except sr.RequestError:
+        print("Erro ao se conectar ao serviço de reconhecimento de fala.")
+        return ""
+
+def interpretar_comando(comando, comandos):
+    for nome, dados in comandos.items():
+        if all(palavra in comando for palavra in dados["keywords"]):
+            if dados["action"] == "exit_program":
+                print("Encerrando o programa...")
+                return False
+            
+            executar_acao(dados["action"])
+            return True
+    
+    print("Comando não reconhecido.")
+    return True
+    
+
+def executar_acao(acao):
+    if acao == "open_browser":
+        abrir_navegador()
+    
+    elif acao == "close_browser":
+        fechar_navegador()
+    
+    elif acao == "new_tab":
+        nova_guia()
+    
+    elif acao == "close_tab":
+        fechar_guia()
+    
+    elif acao == "prev_tab":
+        guia_anterior()
+    
+    elif acao == "next_tab":
+        guia_posterior()
+    
+    elif acao == "exit_program":
+        encerrar_programa()
+    
+    else:
+        print("Comando não reconhecido.")
+    
+
+def abrir_navegador():
+    print("Abrindo o navegador...")
+    os.startfile(config["browser_path"])
+    time.sleep(1)
+
+def fechar_navegador():
+    print("Fechando o navegador...")
+    os.system("taskkill /im firefox.exe /f")
+    time.sleep(1)
+
+def nova_guia():
+    print("Abrindo uma nova guia...")
+    pyautogui.hotkey('ctrl', 't')
+    time.sleep(0.5)
+
+def fechar_guia():
+    print("Fechando a guia atual...")
+    pyautogui.hotkey('ctrl', 'w')
+    time.sleep(0.5)
+
+def guia_anterior():
+    print("Indo para a guia anterior...")
+    pyautogui.hotkey('ctrl', 'pgup')
+    time.sleep(0.5)
+
+def guia_posterior():
+    print("Indo para a próxima guia...")
+    pyautogui.hotkey('ctrl', 'pgdn')
+    time.sleep(0.5)
+
+def encerrar_programa():
+    print("Encerrando o programa...")
+    rodando = False
+
+if __name__ == "__main__":
+    comandos = carregar_comandos()
+    config = carregar_config()
+    
+    while rodando:
+        comando = ouvir_comando()
+        if comando:
+            continuar = interpretar_comando(comando, comandos)
+            if not continuar:
+                break
+    
+    print("Programa encerrado.")
+    
