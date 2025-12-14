@@ -1,4 +1,8 @@
 {
+    "start_dictation": {
+        "keywords": ["digitar"],
+        "action": "start_dictation"
+    },
     "abrir_navegador": {
         "keywords": ["abrir", "navegador"],
         "action": "open_browser"

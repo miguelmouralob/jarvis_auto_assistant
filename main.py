@@ -4,6 +4,11 @@ import time
 import json
 import pyautogui
 
+MODO_COMANDO = "comando"
+MODO_DITADO = "ditado"
+
+modo_atual = MODO_COMANDO
+
 config = {}
 rodando = True
 
@@ -49,7 +54,14 @@ def interpretar_comando(comando, comandos):
     
     print("Comando não reconhecido.")
     return True
-    
+
+
+def start_dictation():
+    global modo_atual
+    modo_atual = MODO_DITADO
+    print("Modo ditado ativado.")
+
+
 
 def executar_acao(acao):
     if acao == "open_browser":
@@ -75,6 +87,9 @@ def executar_acao(acao):
     
     elif acao == "exit_program":
         encerrar_programa()
+    
+    elif acao == "start_dictation":
+        start_dictation()
     
     else:
         print("Comando não reconhecido.")
@@ -115,6 +130,13 @@ def guia_posterior():
     pyautogui.hotkey('ctrl', 'pgdn')
     time.sleep(0.5)
 
+def digitar_texto(texto):
+    global modo_atual
+    print(f"Digitando o texto: {texto}")
+    pyautogui.write(texto, interval=0.05)
+    modo_atual = MODO_COMANDO
+    print("Voltando ao modo comando.")
+
 def encerrar_programa():
     print("Encerrando o programa...")
     rodando = False
@@ -125,10 +147,14 @@ if __name__ == "__main__":
     
     while rodando:
         comando = ouvir_comando()
-        if comando:
-            continuar = interpretar_comando(comando, comandos)
-            if not continuar:
-                break
+        if not comando:
+            continue
+        
+        if modo_atual == MODO_COMANDO:
+            rodando = interpretar_comando(comando, comandos)
+            
+        elif modo_atual == MODO_DITADO:
+            digitar_texto(comando)
     
     print("Programa encerrado.")
     
