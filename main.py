@@ -19,7 +19,10 @@ def carregar_config():
 def carregar_comandos():
     with open('commands.json', 'r', encoding='utf-8') as file:
         return json.load(file)
-    
+
+def carregar_atalhos():
+    with open('shortcuts.json', 'r', encoding='utf-8') as file:
+        return json.load(file)
 
 def ouvir_comando():
     recognizer = sr.Recognizer()
@@ -55,7 +58,6 @@ def interpretar_comando(comando, comandos):
     print("Comando não reconhecido.")
     return True
 
-
 def start_dictation():
     global modo_atual
     modo_atual = MODO_DITADO
@@ -78,6 +80,9 @@ def executar_acao(acao):
     
     elif acao == "input_text":
         text_selector()
+    
+    elif acao == "text_enter":
+        enter_text()
     
     elif acao == "prev_tab":
         guia_anterior()
@@ -132,18 +137,34 @@ def guia_posterior():
 
 def digitar_texto(texto):
     global modo_atual
-    print(f"Digitando o texto: {texto}")
-    pyautogui.write(texto, interval=0.05)
+    
+    texto = texto.lower().strip()
+    
+    if texto in atalhos:
+        texto_para_digitar = atalhos[texto]
+        print(f"Atalho reconhecido: {texto} -> {texto_para_digitar}")
+    else:
+        texto_para_digitar = texto
+        print(f"Digitando o texto: {texto_para_digitar}")
+    
+    pyautogui.write(texto_para_digitar, interval=0.05)
+    time.sleep(0.5)
+    
     modo_atual = MODO_COMANDO
     print("Voltando ao modo comando.")
+
+def enter_text():
+    pyautogui.press('enter')
+    time.sleep(0.5)
 
 def encerrar_programa():
     print("Encerrando o programa...")
     rodando = False
 
 if __name__ == "__main__":
-    comandos = carregar_comandos()
     config = carregar_config()
+    comandos = carregar_comandos()
+    atalhos = carregar_atalhos()
     
     while rodando:
         comando = ouvir_comando()

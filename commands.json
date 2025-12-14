@@ -23,6 +23,10 @@
         "keywords": ["selecionar", "texto"],
         "action": "input_text"
     },
+    "enter_text": {
+        "keywords": ["pesquisar"],
+        "action": "text_enter"
+    },
     "guia_anterior": {
         "keywords": ["tab", "anterior"],
         "action": "prev_tab"
