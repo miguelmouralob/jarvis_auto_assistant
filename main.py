@@ -64,6 +64,9 @@ def executar_acao(acao):
     elif acao == "close_tab":
         fechar_guia()
     
+    elif acao == "input_text":
+        text_selector()
+    
     elif acao == "prev_tab":
         guia_anterior()
     
@@ -95,6 +98,11 @@ def nova_guia():
 def fechar_guia():
     print("Fechando a guia atual...")
     pyautogui.hotkey('ctrl', 'w')
+    time.sleep(0.5)
+
+def text_selector():
+    print("Selecionando o campo de texto...")
+    pyautogui.hotkey('ctrl', 'e')
     time.sleep(0.5)
 
 def guia_anterior():

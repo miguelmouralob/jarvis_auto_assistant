@@ -15,6 +15,10 @@
         "keywords": ["fechar", "tab"],
         "action": "close_tab"
     },
+    "text_selector": {
+        "keywords": ["selecionar", "texto"],
+        "action": "input_text"
+    },
     "guia_anterior": {
         "keywords": ["tab", "anterior"],
         "action": "prev_tab"
