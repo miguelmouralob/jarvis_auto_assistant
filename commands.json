@@ -12,15 +12,15 @@
         "action": "close_browser"
     },
     "nova_guia": {
-        "keywords": ["nova", "tab"],
+        "keywords": ["abrir", "página"],
         "action": "new_tab"
     },
     "fechar_guia": {
-        "keywords": ["fechar", "tab"],
+        "keywords": ["fechar", "página"],
         "action": "close_tab"
     },
     "text_selector": {
-        "keywords": ["selecionar", "texto"],
+        "keywords": ["abrir", "pesquisa"],
         "action": "input_text"
     },
     "enter_text": {
@@ -28,11 +28,11 @@
         "action": "text_enter"
     },
     "guia_anterior": {
-        "keywords": ["tab", "anterior"],
+        "keywords": ["voltar", "página"],
         "action": "prev_tab"
     },
     "guia_posterior": {
-        "keywords": ["tab", "posterior"],
+        "keywords": ["próxima", "página"],
         "action": "next_tab"
     },
     "fechar_bud": {
