@@ -6,6 +6,7 @@ import pyautogui
 
 MODO_COMANDO = "comando"
 MODO_DITADO = "ditado"
+EXIT_COMANDO = "encerrar programa"
 
 modo_atual = MODO_COMANDO
 
@@ -46,12 +47,15 @@ def ouvir_comando():
         return ""
 
 def interpretar_comando(comando, comandos):
+    
+    comando = comando.strip().lower()
+    
+    if comando == "encerrar programa":
+        print("Encerrando o programa...")
+        return False
+    
     for nome, dados in comandos.items():
         if all(palavra in comando for palavra in dados["keywords"]):
-            if dados["action"] == "exit_program":
-                print("Encerrando o programa...")
-                return False
-            
             executar_acao(dados["action"])
             return True
     
@@ -90,9 +94,6 @@ def executar_acao(acao):
     elif acao == "next_tab":
         guia_posterior()
     
-    elif acao == "exit_program":
-        encerrar_programa()
-    
     elif acao == "start_dictation":
         start_dictation()
     
@@ -101,14 +102,19 @@ def executar_acao(acao):
     
 
 def abrir_navegador():
-    print("Abrindo o navegador...")
-    os.startfile(config["browser_path"])
-    time.sleep(1)
+    try:
+        print("Abrindo o navegador...")
+        os.startfile(config["browser_path"])
+        time.sleep(3)
+    except FileNotFoundError:
+        print("Erro: Caminho do navegador não encontrado. Verifique o arquivo config.json.")
+    except Exception as e:
+        print(f"Erro ao tentar abrir o navegador: {e}")
 
 def fechar_navegador():
     print("Fechando o navegador...")
-    os.system("taskkill /im firefox.exe /f")
-    time.sleep(1)
+    pyautogui.hotkey('alt', 'f4')
+    time.sleep(3)
 
 def nova_guia():
     print("Abrindo uma nova guia...")
@@ -158,6 +164,7 @@ def enter_text():
     time.sleep(0.5)
 
 def encerrar_programa():
+    global rodando
     print("Encerrando o programa...")
     rodando = False
 

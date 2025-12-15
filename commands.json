@@ -34,9 +34,5 @@
     "guia_posterior": {
         "keywords": ["próxima", "página"],
         "action": "next_tab"
-    },
-    "fechar_bud": {
-        "keywords": ["encerrar"],
-        "action": "exit_program"
     }
 }
