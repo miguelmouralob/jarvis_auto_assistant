@@ -1,38 +1,50 @@
 {
     "start_dictation": {
-        "keywords": ["digitar"],
+        "keywords": ["digitar", "type"],
         "action": "start_dictation"
     },
+
     "abrir_navegador": {
-        "keywords": ["abrir", "navegador"],
+        "keywords": ["abrir navegador", "open browser"],
         "action": "open_browser"
     },
     "fechar_navegador": {
-        "keywords": ["fechar", "navegador"],
+        "keywords": ["fechar navegador", "close browser"],
         "action": "close_browser"
     },
     "nova_guia": {
-        "keywords": ["abrir", "página"],
+        "keywords": ["abrir página", "new page"],
         "action": "new_tab"
     },
     "fechar_guia": {
-        "keywords": ["fechar", "página"],
+        "keywords": ["fechar página", "close page"],
         "action": "close_tab"
     },
-    "text_selector": {
-        "keywords": ["abrir", "pesquisa"],
-        "action": "input_text"
-    },
-    "enter_text": {
-        "keywords": ["pesquisar"],
-        "action": "text_enter"
-    },
+    
     "guia_anterior": {
-        "keywords": ["voltar", "página"],
+        "keywords": ["voltar página", "previous page"],
         "action": "prev_tab"
     },
     "guia_posterior": {
-        "keywords": ["próxima", "página"],
+        "keywords": ["próxima página", "next page"],
         "action": "next_tab"
+    },
+
+    "text_selector": {
+        "keywords": ["abrir pesquisa", "search bar"],
+        "action": "input_text"
+    },
+    "enter_text": {
+        "keywords": ["pesquisar", "go check it out"],
+        "action": "text_enter"
+    },
+
+    "modo_ingles": {
+        "keywords": ["modo inglês", "english mode"],
+        "action": "set_english_mode"
+    },
+    "modo_portugues": {
+        "keywords": ["portuguese mode", "modo português"],
+        "action": "set_portuguese_mode"
     }
 }

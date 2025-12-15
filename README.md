@@ -1,15 +1,16 @@
-# Jarvis Auto v2 🎙️🤖
+# Jarvis Auto v3 🎙️🤖
 
 Assistente local por voz desenvolvido em Python, capaz de executar comandos no sistema operacional e interagir com campos de texto a partir de ditado por voz, com foco em automação de tarefas simples do dia a dia.
 
 ## 🚀 Funcionalidades
 
 ### 🎛️ Modo Comando
-* Reconhecimento de voz (pt-BR)
+* Reconhecimento de voz (pt-BR / en-US)
 * Sistema de comandos configurável via JSON (`commands.json`)
 * Abertura e fechamento de navegador
 * Controle de abas (nova, fechar, anterior, posterior)
 * Seleção do campo de texto
+* Comando para alterar e auxiliar no uso de palavras entre os idiomas
 * Comando opcional de pesquisa (`Enter`)
 * Encerramento limpo do assistente por comando de voz
 
@@ -61,6 +62,7 @@ O projeto requer **Python 3.10+** e as seguintes bibliotecas:
 * SpeechRecognition
 * PyAudio
 * PyAutoGUI
+* Pyperclip
 
 **Instale as Dependências:**
     ```
