@@ -3,6 +3,7 @@ import os
 import time
 import json
 import pyautogui
+import pyperclip
 
 MODO_COMANDO = "comando"
 MODO_DITADO = "ditado"
@@ -153,7 +154,8 @@ def digitar_texto(texto):
         texto_para_digitar = texto
         print(f"Digitando o texto: {texto_para_digitar}")
     
-    pyautogui.write(texto_para_digitar, interval=0.05)
+    pyperclip.copy(texto_para_digitar)
+    pyautogui.hotkey('ctrl', 'v')
     time.sleep(0.5)
     
     modo_atual = MODO_COMANDO
