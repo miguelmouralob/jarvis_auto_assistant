@@ -1,12 +1,26 @@
-# Jarvis Auto v3 🎙️🤖
+# Jarvis Auto v4 🎙️🤖
 
 Assistente local por voz desenvolvido em Python, capaz de executar comandos no sistema operacional e interagir com campos de texto a partir de ditado por voz, com foco em automação de tarefas simples do dia a dia.
 
 ## 🚀 Funcionalidades
 
+### 🌟 O que há de Novo na v4
+Introdução de maior estabilidade e segurança com uso de "Wake Words Críticas" --> (Palavras de Ativação), garantindo que o assistente reaja quando for explicitamente chamado para uma ação importante.
+
+```bash
+Ouvindo...
+Você disse: Abrir navegador
+Wake word necessária para comando.
+Ouvindo...
+Você disse: ASSISTENTE Abrir navegador
+Wake word detectada.
+Abrindo o navegador...
+```
+
 ### 🎛️ Modo Comando
 * Reconhecimento de voz (pt-BR / en-US)
 * Sistema de comandos configurável via JSON (`commands.json`)
+* Wake words críticas para aumentar segurança 
 * Abertura e fechamento de navegador
 * Controle de abas (nova, fechar, anterior, posterior)
 * Seleção do campo de texto

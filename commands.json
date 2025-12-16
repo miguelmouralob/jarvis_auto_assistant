@@ -39,6 +39,11 @@
         "action": "text_enter"
     },
 
+    "exit_progam": {
+        "keywords": ["encerrar programa", "exit program", "quit program"],
+        "action": "exit_program"
+    },
+
     "modo_ingles": {
         "keywords": ["modo inglês", "english mode"],
         "action": "set_english_mode"

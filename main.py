@@ -9,7 +9,12 @@ MODO_COMANDO = "comando"
 MODO_DITADO = "ditado"
 
 idioma_atual = "pt-BR"
+
 modo_atual = MODO_COMANDO
+
+WAKE_WORDS = ["astra", "assistente", "help"]
+
+ACOES_COM_WAKEWORD = ["open_browser", "close_browser", "exit_program"]
 
 config = {}
 rodando = True
@@ -28,6 +33,13 @@ def carregar_comandos():
 def carregar_atalhos():
     with open('shortcuts.json', 'r', encoding='utf-8') as file:
         return json.load(file)
+
+
+def detectar_wake_word(comando):
+    for wake in WAKE_WORDS:
+        if comando.startswith(wake):
+            return comando.replace(wake, '', 1).strip()
+    return None
 
 
 def ouvir_comando(idioma = "pt-BR"):
@@ -57,24 +69,45 @@ def interpretar_comando(comando, comandos):
     
     comando = comando.strip().lower()
     
-    EXIT_PHRASES = ["encerrar programa", "exit program", "quit program"]
-    
-    if comando in EXIT_PHRASES:
-        print("Encerrando o programa...")
-        return False
+    acao_exige_wake = False
+    comando_sem_wake = comando
 
+    for nome,dados in comandos.items():
+        if any(frase.lower() in comando for frase in dados.get("keywords", [])):
+            if dados["action"] in ACOES_COM_WAKEWORD:
+                acao_exige_wake = True
+                break
+    
+    if acao_exige_wake:
+        comando_limpo = detectar_wake_word(comando)
+        if not comando_limpo:
+            print("Wake word necessária para comando.")
+            return True
+        
+        print("Wake word detectada.")
+        comando_sem_wake = comando_limpo
+    else:
+        comando_sem_wake = comando
+    
+    
     for nome, dados in comandos.items():
-        if any(frase.strip().lower() in comando for frase in dados.get("keywords", [])):
-            if dados["action"] == "set_english_mode":
+        if any(frase.lower() in comando_sem_wake for frase in dados.get("keywords", [])):
+            acao = dados["action"]
+            
+            if acao == "exit_program":
+                encerrar_programa()
+                return False
+            
+            if acao == "set_english_mode":
                 idioma_atual = "en-US"
                 print("Idioma alterado para Inglês.")
                 return True
-            elif dados["action"] == "set_portuguese_mode":
+            elif acao == "set_portuguese_mode":
                 idioma_atual = "pt-BR"
                 print("Idioma alterado para Português.")
                 return True
             else:
-                executar_acao(dados["action"])
+                executar_acao(acao)
                 return True
     
     print("Comando não reconhecido.")
