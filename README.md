@@ -1,21 +1,21 @@
-# Jarvis Auto v4 🎙️🤖
+# Jarvis Auto v5 🎙️🤖
 
 Assistente local por voz desenvolvido em Python, capaz de executar comandos no sistema operacional e interagir com campos de texto a partir de ditado por voz, com foco em automação de tarefas simples do dia a dia.
 
 ## 🚀 Funcionalidades
 
-### 🌟 O que há de Novo na v4
-Introdução de maior estabilidade e segurança com uso de "Wake Words Críticas" --> (Palavras de Ativação), garantindo que o assistente reaja quando for explicitamente chamado para uma ação importante.
+### 🌟 O que há de Novo na v5
+Possibilidade de pesquisar por músicas. Suporte de línguas para PT-BR e EN-US. Links específicos para Youtube e Spotify.
+* Começar o comando dizendo "Tocar" ou "Play";
+* Dizer o nome do artista --> será verificado se consta no arquivo;
+* Dizer o nome da música --> será verificado se consta no arquivo; 
 
 ```bash
-Ouvindo...
-Você disse: Abrir navegador
-Wake word necessária para comando.
-Ouvindo...
-Você disse: ASSISTENTE Abrir navegador
-Wake word detectada.
-Abrindo o navegador...
+Você disse: tocar xuxa parabéns
+Abrindo no Youtube
 ```
+
+*OBS* --> Nesse exemplo, a palavra referência "parabéns", é p/ a música "Parabéns da Xuxa".
 
 ### 🎛️ Modo Comando
 * Reconhecimento de voz (pt-BR / en-US)
@@ -50,7 +50,8 @@ jarvis/
 ├── main.py
 ├── commands.json
 ├── shortcuts.json
-├── config.json         # Arquivo local com configurações sensíveis (não versionado)
+├── music_commands.json         #novo arquivo p/ músicas
+├── config.json         
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -69,6 +70,24 @@ Crie um arquivo `config.json` na raiz do projeto com o seguinte formato:
 }
 ```
 
+E também um arquivo local para as músicas, `music_commands.json`, para armazenar os artistas e as músicas, com seus respectivos links.
+
+Crie um arquivo `music_commands.json` na raiz do projeto com o seguinte formato:
+
+```json
+[
+    {
+        "nomes": ["Nome do artista", "Outra possibilidade do nome"],
+        "musicas": {
+            "palavra_para_reconhecer ou nome_da_musica": {
+                "spotify": "link da música no spotify",
+                "youtube": "link da música no youtube"
+            }
+        }
+    }
+]
+```
+
 ## 📦 Dependências
 
 O projeto requer **Python 3.10+** e as seguintes bibliotecas:
@@ -85,7 +104,7 @@ O projeto requer **Python 3.10+** e as seguintes bibliotecas:
 
 ## ▶️ Execução
 
-Após configurar o `config.json` e instalar as dependências, execute o assistente com o seguinte comando:
+Após configurar o `config.json`, `music_commands.json` e instalar as dependências, execute o assistente com o seguinte comando:
 
 ```bash
 python main.py

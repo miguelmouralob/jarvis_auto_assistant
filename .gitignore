@@ -1,5 +1,6 @@
 # Arquivos Locais
 config.json
+music_commands.json
 
 # Ambiente Virtual
 venv/

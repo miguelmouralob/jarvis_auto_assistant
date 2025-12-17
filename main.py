@@ -35,6 +35,11 @@ def carregar_atalhos():
         return json.load(file)
 
 
+def carregar_musicas():
+    with open('music_commands.json', 'r', encoding='utf-8') as file:
+        return json.load(file)
+
+
 def detectar_wake_word(comando):
     for wake in WAKE_WORDS:
         if comando.startswith(wake):
@@ -46,12 +51,12 @@ def ouvir_comando(idioma = "pt-BR"):
     recognizer = sr.Recognizer()
     
     recognizer.pause_threshold = 2.0
-    recognizer.non_speaking_duration = 1.0
-    recognizer.phrase_threshold = 0.3
+    recognizer.non_speaking_duration = 1.5
+    recognizer.phrase_threshold = 0.5
     
     with sr.Microphone() as source:
         print("Ouvindo...")
-        recognizer.adjust_for_ambient_noise(source, duration = 0.5)
+        recognizer.adjust_for_ambient_noise(source, duration = 1.5)
         audio = recognizer.listen(source)
         
     try:
@@ -72,6 +77,10 @@ def interpretar_comando(comando, comandos):
     global idioma_atual
     
     comando = comando.strip().lower()
+    
+    if comando.startswith("tocar ") or comando.startswith("play "):
+        processar_comando_musica(comando)
+        return True
     
     acao_exige_wake = False
     comando_sem_wake = comando
@@ -203,6 +212,55 @@ def guia_posterior():
     time.sleep(0.5)
 
 
+def processar_comando_musica(comando):
+    global music_commands
+    
+    comando = comando.replace("tocar ", "").replace("play ", "").strip().lower()
+    
+    for entrada in music_commands:
+        nomes_artista = entrada.get("nomes", [])
+        musicas = entrada.get("musicas", {})
+    
+    for nomes_artista in nomes_artista:
+        nome_normalizado = nomes_artista.lower()
+        if nome_normalizado in comando:
+            musica = comando.replace(nome_normalizado, "").strip().lower()
+            tocar_musica(nomes_artista, musica, musicas)
+            return
+    
+    print("Artista não reconhecido.")
+
+
+def tocar_musica(nome_artista_original, musica_falada, musicas_dict):
+    musica_falada = musica_falada.lower().strip()
+    
+    if musica_falada in musicas_dict:
+        dados_musica = musicas_dict[musica_falada]
+    else:
+        matches = [m for m in musicas_dict.keys() if musica_falada in m or m in musica_falada]
+        if not matches:
+            print(f"Música '{musica_falada}' não encontrada para {nome_artista_original}.")
+            return
+
+        musica_encontrada = matches[0]
+        dados_musica = musicas_dict[musica_encontrada]
+        print(f"Música reconhecida como '{musica_encontrada}'.")
+    
+        musica_encontrada = musica_falada
+    
+    if "youtube" in dados_musica:
+        link = dados_musica["youtube"]
+        print("Abrindo no Youtube...")
+    elif "spotify" in dados_musica:
+        link = dados_musica["spotify"]
+        print("Abrindo no Spotify...")
+    else:
+        print("Nenhum link disponível para essa música.")
+        return
+
+    os.startfile(link)
+
+
 def digitar_texto(texto):
     global modo_atual, idioma_atual
     
@@ -252,6 +310,7 @@ if __name__ == "__main__":
     config = carregar_config()
     comandos = carregar_comandos()
     atalhos = carregar_atalhos()
+    music_commands = carregar_musicas()
     
     while rodando:
         comando = ouvir_comando(idioma=idioma_atual)

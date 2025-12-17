@@ -40,7 +40,7 @@
     },
 
     "exit_progam": {
-        "keywords": ["encerrar programa", "exit program", "quit program"],
+        "keywords": ["encerrar programa", "exit program", "quit program", "get out"],
         "action": "exit_program"
     },
 
