@@ -45,9 +45,13 @@ def detectar_wake_word(comando):
 def ouvir_comando(idioma = "pt-BR"):
     recognizer = sr.Recognizer()
     
+    recognizer.pause_threshold = 2.0
+    recognizer.non_speaking_duration = 1.0
+    recognizer.phrase_threshold = 0.3
+    
     with sr.Microphone() as source:
         print("Ouvindo...")
-        recognizer.adjust_for_ambient_noise(source)
+        recognizer.adjust_for_ambient_noise(source, duration = 0.5)
         audio = recognizer.listen(source)
         
     try:
