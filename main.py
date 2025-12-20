@@ -14,7 +14,7 @@ modo_atual = MODO_COMANDO
 
 WAKE_WORDS = ["astra", "assistente", "help"]
 
-ACOES_COM_WAKEWORD = ["open_browser", "close_browser", "exit_program"]
+ACOES_COM_WAKEWORD = ["open_browser", "close_browser", "create_alarm" , "exit_program"]
 
 config = {}
 rodando = True
@@ -47,6 +47,16 @@ def detectar_wake_word(comando):
     return None
 
 
+def detectar_comando_alarme(comando):
+    comando = comando.lower()
+
+    comando_sem_wake = detectar_wake_word(comando)
+    if not comando_sem_wake:
+        return False
+    
+    return "criar alarme" in comando_sem_wake or "set alarm" in comando_sem_wake
+
+
 def ouvir_comando(idioma = "pt-BR"):
     recognizer = sr.Recognizer()
     
@@ -75,6 +85,10 @@ def ouvir_comando(idioma = "pt-BR"):
 
 def interpretar_comando(comando, comandos):
     global idioma_atual
+    
+    if detectar_comando_alarme(comando):
+        processar_comando_alarme(comando)
+        return True
     
     comando = comando.strip().lower()
     
@@ -259,6 +273,74 @@ def tocar_musica(nome_artista_original, musica_falada, musicas_dict):
         return
 
     os.startfile(link)
+
+
+def extrair_duracao(comando):
+    partes = comando.split()
+    
+    for i, palavra in enumerate(partes):
+        if palavra.isdigit():
+            valor = int(palavra)
+            
+            if i + 1 < len(partes):
+                unidade = partes[i + 1]
+                
+                if unidade.startswith("seg"):
+                    return valor
+                elif unidade.startswith("min"):
+                    return valor * 60
+                elif unidade.startswith("hor"):
+                    return valor * 3600
+
+    return None
+
+
+def processar_comando_alarme(comando):
+    comando_limpo = detectar_wake_word(comando)
+    if not comando_limpo:
+        print("Wake word necessária para comando de alarme.")
+        return
+    
+    duracao = extrair_duracao(comando_limpo)
+    
+    if duracao is None:
+        print("Duração do alarme não especificada ou inválida.")
+        return
+    
+    criar_alarme(duracao)
+
+
+def criar_alarme(duracao):
+    inicio = time.time()
+    fim = inicio + duracao
+
+    print(f"Alarme definido para daqui a {duracao} segundos.")
+
+    try:
+        while True:
+            agora = time.time()
+            tempo_restante = fim - agora
+
+            if tempo_restante <= 0:
+                print(f"\rTempo restante: 00:00:00.000", end="")
+                print("\n\aBEEP! O tempo acabou!")
+                break
+
+            segundos_total = int(tempo_restante)
+            horas = segundos_total // 3600
+            minutos = (segundos_total % 3600) // 60
+            segundos = segundos_total % 60
+            milissegundos = int((tempo_restante - segundos_total) * 1000)
+
+            print(
+                f"\rTempo restante: {horas:02}:{minutos:02}:{segundos:02}.{milissegundos:03}",
+                end=""
+            )
+
+            time.sleep(0.01)
+
+    except KeyboardInterrupt:
+        print("\nAlarme interrompido pelo usuário.")
 
 
 def digitar_texto(texto):
